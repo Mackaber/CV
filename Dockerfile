@@ -8,6 +8,7 @@ RUN apt-get update \
         make \
         texlive-fonts-recommended \
         texlive-lang-english \
+        texlive-lang-spanish \
         texlive-latex-base \
         texlive-latex-extra \
         texlive-latex-recommended \
@@ -16,4 +17,4 @@ RUN apt-get update \
 
 WORKDIR /workdir
 
-CMD ["lualatex", "-interaction=nonstopmode", "-halt-on-error", "-output-directory=build", "cv.tex"]
+CMD ["lualatex", "-interaction=nonstopmode", "-halt-on-error", "-output-directory=build", "cv_es.tex"]

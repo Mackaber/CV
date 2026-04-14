@@ -10,7 +10,7 @@ For local builds:
 
 - `lualatex`
 - `Noto Sans`
-- TeX packages required by [cv.tex](/workspaces/CV/cv.tex)
+- TeX packages required by [cv_es.tex](cv_es.tex)
 
 On Debian or Ubuntu, install the local toolchain with:
 
@@ -73,11 +73,11 @@ Compile the document:
 
 ```sh
 docker run --rm -v "$PWD":/workdir -w /workdir cv-latex \
-	lualatex -interaction=nonstopmode -halt-on-error -output-directory=build cv.tex
+	lualatex -interaction=nonstopmode -halt-on-error -output-directory=build cv_es.tex
 ```
 
 ## Why Docker Here
 
-The document in [cv.tex](/workspaces/CV/cv.tex) uses `fontspec` and `Noto Sans`, so portability depends on both the TeX engine and installed fonts. Containerizing the build makes that dependency set explicit and repeatable.
+The document in [cv_es.tex](cv_es.tex) uses `fontspec` and `Noto Sans`, so portability depends on both the TeX engine and installed fonts. Containerizing the build makes that dependency set explicit and repeatable.
 
 Docker is still the most reproducible option. The local path is there for cases like Codespaces, devcontainers, or personal machines that already have a working LaTeX installation.
