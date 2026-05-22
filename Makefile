@@ -1,7 +1,7 @@
 IMAGE_NAME := cv-latex
 OUTPUT_DIR := output
 PDF_DIR := pdf
-PROFILES := ai-engineer academic
+PROFILES := ai-engineer fullstack-engineer academic
 LANGUAGES := es en
 PROFILE ?= ai-engineer
 LANG ?= es

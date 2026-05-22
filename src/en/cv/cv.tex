@@ -17,14 +17,26 @@
 % --- END UNIVERSAL PREAMBLE BLOCK ---
 
 \usepackage{hyperref}
-\usepackage{ifthen}
+\usepackage{etoolbox}
 \setlength{\parindent}{0pt}
 \providecommand{\CVProfile}{ai-engineer}
 \providecommand{\IncludeSummary}{1}
-\newcommand{\ProfileSummary}{AI engineer with full-stack delivery experience, building and shipping production systems with Python, Ruby on Rails, React, and cloud platforms.}
-\ifthenelse{\equal{\CVProfile}{academic}}{
-    \renewcommand{\ProfileSummary}{Computer science M.S. with teaching and mentoring experience, focused on AI/ML education and applied research-to-practice software projects.}
-}{}
+\newcommand{\ProfileSwitch}[3]{%
+    % #1 academic, #2 fullstack-engineer, #3 ai-engineer
+    \ifstrequal{\CVProfile}{academic}{#1}{%
+        \ifstrequal{\CVProfile}{fullstack-engineer}{#2}{#3}%
+    }%
+}
+\newcommand{\ProfileSummary}{\ProfileSwitch{
+% academic
+Computer science M.S. with teaching and mentoring experience, focused on AI/ML education and applied research-to-practice software projects.
+}{
+% fullstack-engineer
+Full-stack software engineer with production delivery experience building scalable platforms and product features across backend, frontend, and cloud infrastructure.
+}{
+% ai-engineer
+AI engineer with full-stack delivery experience, building and shipping production systems with Python, Ruby on Rails, React, and cloud platforms.
+}}
 
 \begin{document}
 \begin{center}
@@ -52,13 +64,35 @@
 \end{center}
 \textbf{Tecnológico de Monterrey (ITESM)} \hfill Monterrey, NL
 
+\ProfileSwitch{
+% academic
+M.S. in Computer Science \hfill 2018 -- 2019
+}{
+% fullstack-engineer
+M.S. in Computer Science \hfill Dec 2020
+}{
+% ai-engineer
 M.S. in Computer Science (Focus on Artificial Intelligence and Machine Learning) \hfill Dec 2020
+}
 
 \vspace{10pt}
 
 \textbf{Tecnológico de Monterrey (ITESM)} \hfill	San Luis Potosí, SLP
 
+\ProfileSwitch{
+% academic
+B.S. in Information Technology and Communications (ITIC) \hfill 2009 -- 2013
+\begin{itemize}[noitemsep, topsep=2pt, partopsep=0pt, parsep=0pt]
+    \item DAE Award ``For Student Development''
+    \item CENEVAL Award for Outstanding EGEL Performance (2014)
+\end{itemize}
+}{
+% fullstack-engineer
 B.S. in Information Technology and Communications \hfill Dec 2013
+}{
+% ai-engineer
+B.S. in Information Technology and Communications \hfill Dec 2013
+}
 
 \vspace{12pt}
 
@@ -130,6 +164,50 @@ B.S. in Information Technology and Communications \hfill Dec 2013
 
 \vspace{12pt}
 
+\ProfileSwitch{
+% academic
+\begin{center}
+    \textbf{Conferences \& Courses}
+\end{center}
+\begin{itemize}[noitemsep, topsep=0pt, partopsep=0pt, parsep=0pt]
+    \item Hacking Workshop, Tecnológico de Monterrey Campus San Luis Potosí (2012)
+    \item Hacking Conference (CongresoExit), Tecnológico de Monterrey Campus San Luis Potosí (2014)
+    \item Hacking Web Applications conference, Tecnológico de Monterrey Campus Monterrey, SISCTI 40 (2015)
+    \item Hacking Web Applications conference, Instituto Tecnológico de Piedras Negras (2015)
+    \item Tuna Hack programming hackathon (2015, 2017)
+    \item Technovation programming hackathon for girls (2016, 2017)
+    \item TunaTech technology and business summit (2017, 2019)
+    \item Talent Hackathon (2019 -- 2023)
+    \item Wolfram Summer School (2019)
+\end{itemize}
+
+\vspace{12pt}
+
+\begin{center}
+    \textbf{Academic \& Community Engagement}
+\end{center}
+\begin{itemize}[noitemsep, topsep=0pt, partopsep=0pt, parsep=0pt]
+    \item Co-founded ``Comunidad Código,'' a programmers association in San Luis Potosí.
+    \item Collaborated with the organizing team of the ``DesarrolladorSLP'' programmers association.
+    \item Participated in more than 17 hackathons: 10 as attendee, 7 as mentor, 1 as organizer, and won 2.
+    \item Supported the creation of Tuna Valley, a coalition of local communities in San Luis Potosí.
+\end{itemize}
+}{
+% fullstack-engineer
+\begin{center}
+    \textbf{Leadership \& Activities}
+\end{center}
+
+\textbf{Tech Communities \& Events}	\hfill Mexico
+
+\textbf{Speaker, Mentor \& Co-founder} \hfill 2013 – Present
+\begin{itemize}[noitemsep, topsep=0pt, partopsep=0pt, parsep=0pt]
+    \item Participated in over 20 Hackathons (winning 2 and mentoring 10), including Startup Weekend, AngelHack, and Talent Hackathon.
+    \item Delivered 15+ talks and workshops on software engineering and platform development at major tech events such as TalentLand, Nerdearla, and NerdyTalks.
+    \item Co-founded ``Comunidad Código,'' a local developers' association, and actively contributed to the Tuna Valley initiative.
+\end{itemize}
+}{
+% ai-engineer
 \begin{center}
     \textbf{Leadership \& Activities}
 \end{center}
@@ -142,6 +220,7 @@ B.S. in Information Technology and Communications \hfill Dec 2013
     \item Delivered 15+ talks and workshops on software engineering and AI at major tech events such as TalentLand, Nerdearla, and NerdyTalks.
     \item Co-founded ``Comunidad Código,'' a local developers' association, and actively contributed to the Tuna Valley initiative.
 \end{itemize}
+}
 
 \vspace{12pt}
 

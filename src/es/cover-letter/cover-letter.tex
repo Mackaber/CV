@@ -5,12 +5,18 @@
 \usepackage[bidi=basic, provide=*]{babel}
 \babelprovide[main, import, onchar=ids fonts]{spanish}
 \babelfont{rm}{Noto Sans}
-\usepackage{ifthen}
+\usepackage{etoolbox}
 \setlength{\parindent}{0pt}
 
 \providecommand{\CVProfile}{ai-engineer}
 \providecommand{\CompanyName}{Equipo de Reclutamiento}
 \providecommand{\RoleTitle}{Vacante}
+\newcommand{\ProfileSwitch}[3]{%
+    % #1 academic, #2 fullstack-engineer, #3 ai-engineer
+    \ifstrequal{\CVProfile}{academic}{#1}{%
+        \ifstrequal{\CVProfile}{fullstack-engineer}{#2}{#3}%
+    }%
+}
 
 \begin{document}
 \textbf{Miguel Angel Bravo Vidales} \hfill San Luis Potosi, Mexico\\
@@ -24,9 +30,14 @@ Asunto: \textbf{\RoleTitle}
 Estimado equipo de reclutamiento,
 
 \vspace{12pt}
-\ifthenelse{\equal{\CVProfile}{academic}}{
+\ProfileSwitch{
+% academic
 Me entusiasma postularme a esta oportunidad porque conecta con mi trayectoria en educacion en computacion, mentoria y trabajo aplicado en IA/ML. He impartido clases de desarrollo de software y fundamentos de nube, y disfruto traducir profundidad tecnica en aprendizaje claro y accionable.
 }{
+% fullstack-engineer
+Me entusiasma postularme a esta oportunidad porque conecta con mi trayectoria como ingeniero full-stack. He entregado servicios backend, funcionalidades frontend e integraciones cloud en equipos de producto, priorizando confiabilidad e impacto practico.
+}{
+% ai-engineer
 Me entusiasma postularme a esta oportunidad porque conecta con mi trayectoria como ingeniero de software con enfoque en IA. He construido y entregado herramientas y plataformas en produccion usando Python, Ruby on Rails, React y servicios cloud, priorizando impacto practico.
 }
 

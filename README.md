@@ -38,7 +38,7 @@ make cv LANG=en PROFILE=ai-engineer INCLUDE_SUMMARY=1
 Supported values:
 
 - `LANG`: `en` or `es`
-- `PROFILE`: `ai-engineer` or `academic`
+- `PROFILE`: `ai-engineer`, `fullstack-engineer`, or `academic`
 - `INCLUDE_SUMMARY`: `1` (include summary) or `0` (hide summary)
 
 Build all CV combinations:
@@ -74,7 +74,7 @@ The templates are:
 
 CV files (`src/en/cv/cv.tex`, `src/es/cv/cv.tex`) accept:
 
-- `\CVProfile` (`ai-engineer`, `academic`)
+- `\CVProfile` (`ai-engineer`, `fullstack-engineer`, `academic`)
 - `\IncludeSummary` (`1`, `0`)
 
 Cover-letter files accept:
