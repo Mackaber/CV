@@ -62,12 +62,14 @@ pdf-en:
 pdf-all: cv-all
 
 compile-cv-local:
-	LC_ALL=C.UTF-8 LANG=C.UTF-8 $(LATEX_COMMON) -jobname=cv_$(LANG)_$(PROFILE) "\\def\\CVProfile{$(PROFILE)}\\def\\IncludeSummary{$(INCLUDE_SUMMARY)}\\input{cv_$(LANG).tex}"
-	cp $(OUTPUT_DIR)/cv_$(LANG)_$(PROFILE).pdf $(PDF_DIR)/cv_$(LANG)_$(PROFILE).pdf
+	LC_ALL=C.UTF-8 LANG=C.UTF-8 $(LATEX_COMMON) -jobname=cv_$(LANG)_$(PROFILE) "\\def\\CVProfile{$(PROFILE)}\\def\\IncludeSummary{$(INCLUDE_SUMMARY)}\\input{src/$(LANG)/cv.tex}"
+	mkdir -p $(PDF_DIR)/$(LANG)/cv
+	cp $(OUTPUT_DIR)/cv_$(LANG)_$(PROFILE).pdf $(PDF_DIR)/$(LANG)/cv/cv_$(PROFILE).pdf
 
 compile-cover-letter-local:
-	LC_ALL=C.UTF-8 LANG=C.UTF-8 $(LATEX_COMMON) -jobname=cover_letter_$(LANG)_$(PROFILE) "\\def\\CVProfile{$(PROFILE)}\\input{cover_letter_$(LANG).tex}"
-	cp $(OUTPUT_DIR)/cover_letter_$(LANG)_$(PROFILE).pdf $(PDF_DIR)/cover_letter_$(LANG)_$(PROFILE).pdf
+	LC_ALL=C.UTF-8 LANG=C.UTF-8 $(LATEX_COMMON) -jobname=cover_letter_$(LANG)_$(PROFILE) "\\def\\CVProfile{$(PROFILE)}\\input{src/$(LANG)/cover-letter.tex}"
+	mkdir -p $(PDF_DIR)/$(LANG)/cover-letter
+	cp $(OUTPUT_DIR)/cover_letter_$(LANG)_$(PROFILE).pdf $(PDF_DIR)/$(LANG)/cover-letter/cover_letter_$(PROFILE).pdf
 
 install-local-deps:
 	@if command -v apt-get >/dev/null 2>&1; then \
