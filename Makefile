@@ -1,52 +1,73 @@
 IMAGE_NAME := cv-latex
-OUTPUT_DIR := build
-PDF := $(OUTPUT_DIR)/cv.pdf
-PDF_EN := $(OUTPUT_DIR)/cv_en.pdf
+OUTPUT_DIR := output
+PDF_DIR := pdf
+PROFILES := ai-engineer academic
+LANGUAGES := es en
+PROFILE ?= ai-engineer
+LANG ?= es
+INCLUDE_SUMMARY ?= 1
 LATEX_COMMON := lualatex -interaction=nonstopmode -halt-on-error -output-directory=$(OUTPUT_DIR)
-LATEX_ES := $(LATEX_COMMON) -jobname=cv cv_es.tex
-LATEX_EN := $(LATEX_COMMON) -jobname=cv_en cv_en.tex
 APT_PACKAGES := fonts-noto-core texlive-fonts-recommended texlive-lang-english texlive-lang-spanish texlive-latex-base texlive-latex-extra texlive-latex-recommended texlive-luatex
 
-.PHONY: image pdf pdf-en pdf-all pdf-local pdf-local-en pdf-docker pdf-docker-en install-local-deps clean shell
+.PHONY: image cv cv-all cover-letter cover-letter-all pdf pdf-en pdf-all compile-cv-local compile-cover-letter-local cv-docker cover-letter-docker install-local-deps clean shell
 
 image:
 	docker build -t $(IMAGE_NAME) .
 
-pdf:
-	mkdir -p $(OUTPUT_DIR)
+cv:
+	mkdir -p $(OUTPUT_DIR) $(PDF_DIR)
 	@if command -v lualatex >/dev/null 2>&1; then \
 		echo "Using local lualatex toolchain"; \
-		$(LATEX_ES); \
+		$(MAKE) compile-cv-local LANG=$(LANG) PROFILE=$(PROFILE) INCLUDE_SUMMARY=$(INCLUDE_SUMMARY); \
 	elif command -v docker >/dev/null 2>&1; then \
 		echo "Local lualatex not found, using Docker toolchain"; \
-		$(MAKE) pdf-docker; \
+		$(MAKE) cv-docker LANG=$(LANG) PROFILE=$(PROFILE) INCLUDE_SUMMARY=$(INCLUDE_SUMMARY); \
 	else \
 		echo "Neither lualatex nor docker is available"; \
 		exit 1; \
 	fi
+
+cover-letter:
+	mkdir -p $(OUTPUT_DIR) $(PDF_DIR)
+	@if command -v lualatex >/dev/null 2>&1; then \
+		echo "Using local lualatex toolchain"; \
+		$(MAKE) compile-cover-letter-local LANG=$(LANG) PROFILE=$(PROFILE); \
+	elif command -v docker >/dev/null 2>&1; then \
+		echo "Local lualatex not found, using Docker toolchain"; \
+		$(MAKE) cover-letter-docker LANG=$(LANG) PROFILE=$(PROFILE); \
+	else \
+		echo "Neither lualatex nor docker is available"; \
+		exit 1; \
+	fi
+
+cv-all:
+	@for lang in $(LANGUAGES); do \
+		for profile in $(PROFILES); do \
+			$(MAKE) cv LANG=$$lang PROFILE=$$profile INCLUDE_SUMMARY=$(INCLUDE_SUMMARY); \
+		done; \
+	done
+
+cover-letter-all:
+	@for lang in $(LANGUAGES); do \
+		for profile in $(PROFILES); do \
+			$(MAKE) cover-letter LANG=$$lang PROFILE=$$profile; \
+		done; \
+	done
+
+pdf: cv
 
 pdf-en:
-	mkdir -p $(OUTPUT_DIR)
-	@if command -v lualatex >/dev/null 2>&1; then \
-		echo "Using local lualatex toolchain"; \
-		$(LATEX_EN); \
-	elif command -v docker >/dev/null 2>&1; then \
-		echo "Local lualatex not found, using Docker toolchain"; \
-		$(MAKE) pdf-docker-en; \
-	else \
-		echo "Neither lualatex nor docker is available"; \
-		exit 1; \
-	fi
+	$(MAKE) cv LANG=en PROFILE=ai-engineer INCLUDE_SUMMARY=$(INCLUDE_SUMMARY)
 
-pdf-all: pdf pdf-en
+pdf-all: cv-all
 
-pdf-local:
-	mkdir -p $(OUTPUT_DIR)
-	$(LATEX_ES)
+compile-cv-local:
+	LC_ALL=C.UTF-8 LANG=C.UTF-8 $(LATEX_COMMON) -jobname=cv_$(LANG)_$(PROFILE) "\\def\\CVProfile{$(PROFILE)}\\def\\IncludeSummary{$(INCLUDE_SUMMARY)}\\input{cv_$(LANG).tex}"
+	cp $(OUTPUT_DIR)/cv_$(LANG)_$(PROFILE).pdf $(PDF_DIR)/cv_$(LANG)_$(PROFILE).pdf
 
-pdf-local-en:
-	mkdir -p $(OUTPUT_DIR)
-	$(LATEX_EN)
+compile-cover-letter-local:
+	LC_ALL=C.UTF-8 LANG=C.UTF-8 $(LATEX_COMMON) -jobname=cover_letter_$(LANG)_$(PROFILE) "\\def\\CVProfile{$(PROFILE)}\\input{cover_letter_$(LANG).tex}"
+	cp $(OUTPUT_DIR)/cover_letter_$(LANG)_$(PROFILE).pdf $(PDF_DIR)/cover_letter_$(LANG)_$(PROFILE).pdf
 
 install-local-deps:
 	@if command -v apt-get >/dev/null 2>&1; then \
@@ -59,16 +80,18 @@ install-local-deps:
 		exit 1; \
 	fi
 
-pdf-docker: image
-	mkdir -p $(OUTPUT_DIR)
-	docker run --rm -v "$(CURDIR)":/workdir -w /workdir $(IMAGE_NAME) $(LATEX_ES)
+cv-docker: image
+	mkdir -p $(OUTPUT_DIR) $(PDF_DIR)
+	docker run --rm -v "$(CURDIR)":/workdir -w /workdir $(IMAGE_NAME) \
+		make compile-cv-local LANG=$(LANG) PROFILE=$(PROFILE) INCLUDE_SUMMARY=$(INCLUDE_SUMMARY)
 
-pdf-docker-en: image
-	mkdir -p $(OUTPUT_DIR)
-	docker run --rm -v "$(CURDIR)":/workdir -w /workdir $(IMAGE_NAME) $(LATEX_EN)
+cover-letter-docker: image
+	mkdir -p $(OUTPUT_DIR) $(PDF_DIR)
+	docker run --rm -v "$(CURDIR)":/workdir -w /workdir $(IMAGE_NAME) \
+		make compile-cover-letter-local LANG=$(LANG) PROFILE=$(PROFILE)
 
 clean:
-	rm -rf $(OUTPUT_DIR)
+	rm -rf $(OUTPUT_DIR) $(PDF_DIR) build
 
 shell: image
 	docker run --rm -it -v "$(CURDIR)":/workdir -w /workdir $(IMAGE_NAME) /bin/bash

@@ -17,7 +17,14 @@
 % --- END UNIVERSAL PREAMBLE BLOCK ---
 
 \usepackage{hyperref}
+\usepackage{ifthen}
 \setlength{\parindent}{0pt}
+\providecommand{\CVProfile}{ai-engineer}
+\providecommand{\IncludeSummary}{1}
+\newcommand{\ProfileSummary}{AI engineer with full-stack delivery experience, building and shipping production systems with Python, Ruby on Rails, React, and cloud platforms.}
+\ifthenelse{\equal{\CVProfile}{academic}}{
+    \renewcommand{\ProfileSummary}{Computer science M.S. with teaching and mentoring experience, focused on AI/ML education and applied research-to-practice software projects.}
+}{}
 
 \begin{document}
 \begin{center}
@@ -29,6 +36,14 @@
 \begin{center}
     San Luis Potosí, SLP, México \textbullet \ x@mackaber.me \textbullet \ +52 444 444 7397 \textbullet \ linkedin.com/in/mackaber \textbullet \ github.com/mackaber
 \end{center}
+
+\ifnum\IncludeSummary=1
+\vspace{6pt}
+\begin{center}
+    \textbf{Summary}
+\end{center}
+\ProfileSummary
+\fi
 
 \vspace{0.5pt}
 
