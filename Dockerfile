@@ -17,4 +17,4 @@ RUN apt-get update \
 
 WORKDIR /workdir
 
-CMD ["lualatex", "-interaction=nonstopmode", "-halt-on-error", "-output-directory=build", "cv_es.tex"]
+CMD ["make", "cv", "LANG=es", "PROFILE=ai-engineer"]

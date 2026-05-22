@@ -1,0 +1,43 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper, left=2.2cm, top=2.2cm, right=2.2cm, bottom=2.2cm]{geometry}
+\usepackage{fontspec}
+\usepackage[bidi=basic, provide=*]{babel}
+\babelprovide[main, import, onchar=ids fonts]{spanish}
+\babelfont{rm}{Noto Sans}
+\usepackage{ifthen}
+\setlength{\parindent}{0pt}
+
+\providecommand{\CVProfile}{ai-engineer}
+\providecommand{\CompanyName}{Equipo de Reclutamiento}
+\providecommand{\RoleTitle}{Vacante}
+
+\begin{document}
+\textbf{Miguel Angel Bravo Vidales} \hfill San Luis Potosi, Mexico\\
+x@mackaber.me \textbullet\ linkedin.com/in/mackaber \textbullet\ github.com/mackaber
+
+\vspace{18pt}
+\textbf{\CompanyName}\\
+Asunto: \textbf{\RoleTitle}
+
+\vspace{14pt}
+Estimado equipo de reclutamiento,
+
+\vspace{12pt}
+\ifthenelse{\equal{\CVProfile}{academic}}{
+Me entusiasma postularme a esta oportunidad porque conecta con mi trayectoria en educacion en computacion, mentoria y trabajo aplicado en IA/ML. He impartido clases de desarrollo de software y fundamentos de nube, y disfruto traducir profundidad tecnica en aprendizaje claro y accionable.
+}{
+Me entusiasma postularme a esta oportunidad porque conecta con mi trayectoria como ingeniero de software con enfoque en IA. He construido y entregado herramientas y plataformas en produccion usando Python, Ruby on Rails, React y servicios cloud, priorizando impacto practico.
+}
+
+\vspace{10pt}
+En mis diferentes roles he trabajado en la interseccion entre ejecucion tecnica y transferencia de conocimiento: desarrollar software, mentorear equipos y ensenar conceptos tecnicos a audiencias diversas. Aportaria esa misma combinacion de ownership, colaboracion y adaptabilidad a su equipo.
+
+\vspace{10pt}
+Gracias por su tiempo y consideracion. Sera un gusto conversar sobre como puedo contribuir a \CompanyName.
+
+\vspace{16pt}
+Atentamente,\\
+Miguel Angel Bravo Vidales
+
+\end{document}

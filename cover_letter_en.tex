@@ -1,0 +1,43 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper, left=2.2cm, top=2.2cm, right=2.2cm, bottom=2.2cm]{geometry}
+\usepackage{fontspec}
+\usepackage[bidi=basic, provide=*]{babel}
+\babelprovide[import, onchar=ids fonts]{english}
+\babelfont{rm}{Noto Sans}
+\usepackage{ifthen}
+\setlength{\parindent}{0pt}
+
+\providecommand{\CVProfile}{ai-engineer}
+\providecommand{\CompanyName}{Hiring Team}
+\providecommand{\RoleTitle}{Position}
+
+\begin{document}
+\textbf{Miguel Angel Bravo Vidales} \hfill San Luis Potosi, Mexico\\
+x@mackaber.me \textbullet\ linkedin.com/in/mackaber \textbullet\ github.com/mackaber
+
+\vspace{18pt}
+\textbf{\CompanyName}\\
+Re: \textbf{\RoleTitle}
+
+\vspace{14pt}
+Dear Hiring Team,
+
+\vspace{12pt}
+\ifthenelse{\equal{\CVProfile}{academic}}{
+I am excited to apply for this opportunity because it aligns with my background in computer science education, mentoring, and applied AI/ML work. I have taught software development and cloud fundamentals, and I enjoy connecting technical depth with clear communication in learning environments.
+}{
+I am excited to apply for this opportunity because it aligns with my background as an AI-focused software engineer. I have built and delivered production tools and platforms using Python, Ruby on Rails, React, and cloud services, with a strong emphasis on practical impact.
+}
+
+\vspace{10pt}
+Across my roles, I have worked at the intersection of engineering execution and knowledge transfer: shipping software, mentoring teams, and teaching technical concepts to different audiences. I would bring that same combination of ownership, collaboration, and adaptability to your team.
+
+\vspace{10pt}
+Thank you for your time and consideration. I would welcome the chance to discuss how I can contribute to \CompanyName.
+
+\vspace{16pt}
+Sincerely,\\
+Miguel Angel Bravo Vidales
+
+\end{document}

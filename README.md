@@ -1,6 +1,6 @@
 # CV
 
-This repository supports both local and Docker-based builds.
+This repository supports local and Docker-based builds for multiple CV and cover-letter variants.
 
 ## Requirements
 
@@ -22,26 +22,74 @@ For Docker builds:
 
 - Docker
 
-## Build
+## Output Layout
 
-Build the PDF with:
+- `output/`: all intermediate LaTeX artifacts (`.aux`, `.log`, `.out`, generated PDFs before copy)
+- `pdf/`: final generated versions ready to share
 
-```sh
-make pdf
-```
+## Build CV Versions
 
-`make pdf` prefers the local `lualatex` toolchain when available and falls back to Docker otherwise.
-
-The generated file is written to `build/cv.pdf` on the host.
-
-To force one mode explicitly:
+Build one CV variant:
 
 ```sh
-make pdf-local
-make pdf-docker
+make cv LANG=en PROFILE=ai-engineer INCLUDE_SUMMARY=1
 ```
+
+Supported values:
+
+- `LANG`: `en` or `es`
+- `PROFILE`: `ai-engineer` or `academic`
+- `INCLUDE_SUMMARY`: `1` (include summary) or `0` (hide summary)
+
+Build all CV combinations:
+
+```sh
+make cv-all
+```
+
+`make pdf` remains available as an alias for `make cv` with defaults (`LANG=es`, `PROFILE=ai-engineer`).
+
+## Build Cover Letters
+
+Build one cover-letter variant:
+
+```sh
+make cover-letter LANG=en PROFILE=academic
+```
+
+Build all cover-letter combinations:
+
+```sh
+make cover-letter-all
+```
+
+The templates are:
+
+- `cover_letter_en.tex`
+- `cover_letter_es.tex`
+
+## Configuration in LaTeX
+
+CV files (`cv_en.tex`, `cv_es.tex`) accept:
+
+- `\CVProfile` (`ai-engineer`, `academic`)
+- `\IncludeSummary` (`1`, `0`)
+
+Cover-letter files accept:
+
+- `\CVProfile`
+- `\CompanyName`
+- `\RoleTitle`
+
+The Makefile sets `\CVProfile` and `\IncludeSummary` automatically for generated variants.
 
 ## Other Commands
+
+Install local dependencies (Debian/Ubuntu):
+
+```sh
+make install-local-deps
+```
 
 Clean generated artifacts:
 
@@ -54,30 +102,3 @@ Open a shell inside the build image:
 ```sh
 make shell
 ```
-
-## Local Setup Notes
-
-The document uses `fontspec`, `babel`, and `Noto Sans`, so local builds need a Unicode-capable engine and the font installed on the host. On Debian or Ubuntu, the Dockerfile reflects the package set that is known to work.
-
-`make install-local-deps` installs that same package set with `apt-get`. On non-Debian systems, use the package list in [Makefile](/workspaces/CV/Makefile) as the reference for manual installation.
-
-## Manual Docker Usage
-
-Build the image:
-
-```sh
-docker build -t cv-latex .
-```
-
-Compile the document:
-
-```sh
-docker run --rm -v "$PWD":/workdir -w /workdir cv-latex \
-	lualatex -interaction=nonstopmode -halt-on-error -output-directory=build cv_es.tex
-```
-
-## Why Docker Here
-
-The document in [cv_es.tex](cv_es.tex) uses `fontspec` and `Noto Sans`, so portability depends on both the TeX engine and installed fonts. Containerizing the build makes that dependency set explicit and repeatable.
-
-Docker is still the most reproducible option. The local path is there for cases like Codespaces, devcontainers, or personal machines that already have a working LaTeX installation.
