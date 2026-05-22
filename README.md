@@ -10,7 +10,7 @@ For local builds:
 
 - `lualatex`
 - `Noto Sans`
-- TeX packages required by [cv_es.tex](cv_es.tex)
+- TeX packages required by [src/es/cv/cv.tex](src/es/cv/cv.tex)
 
 On Debian or Ubuntu, install the local toolchain with:
 
@@ -25,7 +25,7 @@ For Docker builds:
 ## Output Layout
 
 - `output/`: all intermediate LaTeX artifacts (`.aux`, `.log`, `.out`, generated PDFs before copy)
-- `pdf/`: final generated versions ready to share
+- `pdf/`: final generated versions ready to share, organized as `pdf/<lang>/<cv|cover-letter>/`
 
 ## Build CV Versions
 
@@ -65,12 +65,14 @@ make cover-letter-all
 
 The templates are:
 
-- `cover_letter_en.tex`
-- `cover_letter_es.tex`
+- `src/en/cv/cv.tex`
+- `src/es/cv/cv.tex`
+- `src/en/cover-letter/cover-letter.tex`
+- `src/es/cover-letter/cover-letter.tex`
 
 ## Configuration in LaTeX
 
-CV files (`cv_en.tex`, `cv_es.tex`) accept:
+CV files (`src/en/cv/cv.tex`, `src/es/cv/cv.tex`) accept:
 
 - `\CVProfile` (`ai-engineer`, `academic`)
 - `\IncludeSummary` (`1`, `0`)

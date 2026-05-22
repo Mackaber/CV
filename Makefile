@@ -15,7 +15,7 @@ image:
 	docker build -t $(IMAGE_NAME) .
 
 cv:
-	mkdir -p $(OUTPUT_DIR) $(PDF_DIR)
+	mkdir -p $(OUTPUT_DIR) $(PDF_DIR)/$(LANG)/cv
 	@if command -v lualatex >/dev/null 2>&1; then \
 		echo "Using local lualatex toolchain"; \
 		$(MAKE) compile-cv-local LANG=$(LANG) PROFILE=$(PROFILE) INCLUDE_SUMMARY=$(INCLUDE_SUMMARY); \
@@ -28,7 +28,7 @@ cv:
 	fi
 
 cover-letter:
-	mkdir -p $(OUTPUT_DIR) $(PDF_DIR)
+	mkdir -p $(OUTPUT_DIR) $(PDF_DIR)/$(LANG)/cover-letter
 	@if command -v lualatex >/dev/null 2>&1; then \
 		echo "Using local lualatex toolchain"; \
 		$(MAKE) compile-cover-letter-local LANG=$(LANG) PROFILE=$(PROFILE); \
@@ -62,12 +62,12 @@ pdf-en:
 pdf-all: cv-all
 
 compile-cv-local:
-	LC_ALL=C.UTF-8 LANG=C.UTF-8 $(LATEX_COMMON) -jobname=cv_$(LANG)_$(PROFILE) "\\def\\CVProfile{$(PROFILE)}\\def\\IncludeSummary{$(INCLUDE_SUMMARY)}\\input{cv_$(LANG).tex}"
-	cp $(OUTPUT_DIR)/cv_$(LANG)_$(PROFILE).pdf $(PDF_DIR)/cv_$(LANG)_$(PROFILE).pdf
+	LC_ALL=C.UTF-8 LANG=C.UTF-8 $(LATEX_COMMON) -jobname=cv_$(LANG)_$(PROFILE) "\\def\\CVProfile{$(PROFILE)}\\def\\IncludeSummary{$(INCLUDE_SUMMARY)}\\input{src/$(LANG)/cv/cv.tex}"
+	cp $(OUTPUT_DIR)/cv_$(LANG)_$(PROFILE).pdf $(PDF_DIR)/$(LANG)/cv/cv_$(LANG)_$(PROFILE).pdf
 
 compile-cover-letter-local:
-	LC_ALL=C.UTF-8 LANG=C.UTF-8 $(LATEX_COMMON) -jobname=cover_letter_$(LANG)_$(PROFILE) "\\def\\CVProfile{$(PROFILE)}\\input{cover_letter_$(LANG).tex}"
-	cp $(OUTPUT_DIR)/cover_letter_$(LANG)_$(PROFILE).pdf $(PDF_DIR)/cover_letter_$(LANG)_$(PROFILE).pdf
+	LC_ALL=C.UTF-8 LANG=C.UTF-8 $(LATEX_COMMON) -jobname=cover_letter_$(LANG)_$(PROFILE) "\\def\\CVProfile{$(PROFILE)}\\input{src/$(LANG)/cover-letter/cover-letter.tex}"
+	cp $(OUTPUT_DIR)/cover_letter_$(LANG)_$(PROFILE).pdf $(PDF_DIR)/$(LANG)/cover-letter/cover_letter_$(LANG)_$(PROFILE).pdf
 
 install-local-deps:
 	@if command -v apt-get >/dev/null 2>&1; then \
@@ -81,12 +81,12 @@ install-local-deps:
 	fi
 
 cv-docker: image
-	mkdir -p $(OUTPUT_DIR) $(PDF_DIR)
+	mkdir -p $(OUTPUT_DIR) $(PDF_DIR)/$(LANG)/cv
 	docker run --rm -v "$(CURDIR)":/workdir -w /workdir $(IMAGE_NAME) \
 		make compile-cv-local LANG=$(LANG) PROFILE=$(PROFILE) INCLUDE_SUMMARY=$(INCLUDE_SUMMARY)
 
 cover-letter-docker: image
-	mkdir -p $(OUTPUT_DIR) $(PDF_DIR)
+	mkdir -p $(OUTPUT_DIR) $(PDF_DIR)/$(LANG)/cover-letter
 	docker run --rm -v "$(CURDIR)":/workdir -w /workdir $(IMAGE_NAME) \
 		make compile-cover-letter-local LANG=$(LANG) PROFILE=$(PROFILE)
 
