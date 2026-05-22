@@ -5,12 +5,18 @@
 \usepackage[bidi=basic, provide=*]{babel}
 \babelprovide[import, onchar=ids fonts]{english}
 \babelfont{rm}{Noto Sans}
-\usepackage{ifthen}
+\usepackage{etoolbox}
 \setlength{\parindent}{0pt}
 
 \providecommand{\CVProfile}{ai-engineer}
 \providecommand{\CompanyName}{Hiring Team}
 \providecommand{\RoleTitle}{Position}
+\newcommand{\ProfileSwitch}[3]{%
+    % #1 academic, #2 fullstack-engineer, #3 ai-engineer
+    \ifstrequal{\CVProfile}{academic}{#1}{%
+        \ifstrequal{\CVProfile}{fullstack-engineer}{#2}{#3}%
+    }%
+}
 
 \begin{document}
 \textbf{Miguel Angel Bravo Vidales} \hfill San Luis Potosi, Mexico\\
@@ -24,9 +30,14 @@ Re: \textbf{\RoleTitle}
 Dear Hiring Team,
 
 \vspace{12pt}
-\ifthenelse{\equal{\CVProfile}{academic}}{
+\ProfileSwitch{
+% academic
 I am excited to apply for this opportunity because it aligns with my background in computer science education, mentoring, and applied AI/ML work. I have taught software development and cloud fundamentals, and I enjoy connecting technical depth with clear communication in learning environments.
 }{
+% fullstack-engineer
+I am excited to apply for this opportunity because it aligns with my background as a full-stack software engineer. I have delivered backend services, frontend features, and cloud-native integrations across product teams, with a strong focus on reliability and execution.
+}{
+% ai-engineer
 I am excited to apply for this opportunity because it aligns with my background as an AI-focused software engineer. I have built and delivered production tools and platforms using Python, Ruby on Rails, React, and cloud services, with a strong emphasis on practical impact.
 }
 
