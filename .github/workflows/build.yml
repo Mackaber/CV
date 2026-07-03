@@ -1,0 +1,30 @@
+name: Build CV PDFs
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install LaTeX dependencies
+        run: make install-local-deps
+
+      - name: Build all CVs
+        run: make cv-all INCLUDE_SUMMARY=1
+
+      - name: Build all cover letters
+        run: make cover-letter-all
+
+      - name: Upload generated PDFs
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdfs
+          path: pdf/
+          if-no-files-found: error
